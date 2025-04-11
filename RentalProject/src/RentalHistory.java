@@ -15,7 +15,7 @@ public class RentalHistory {
     public List<RentalRecord> getRentalRecordsByCustomer(String customerName) {
         List<RentalRecord> result = new ArrayList<>();
         for (RentalRecord record : rentalRecords) {
-            if (record.getCustomer().toString().toLowerCase().contains(customerName.toLowerCase())) {
+            if (record.getCustomer().getCustomerName().equalsIgnoreCase(customerName)) {
                 result.add(record);
             }
         }
