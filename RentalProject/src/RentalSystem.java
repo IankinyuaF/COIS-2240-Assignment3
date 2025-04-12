@@ -25,14 +25,24 @@ public class RentalSystem {
         return instance;
     }
 
-    public void addVehicle(Vehicle vehicle) {
+    public boolean addVehicle(Vehicle vehicle) {
+        if (findVehicleByPlate(vehicle.getLicensePlate()) != null) {
+            System.out.println("Error: Vehicle with license plate '" + vehicle.getLicensePlate() + "' already exists.");
+            return false;
+        }
         vehicles.add(vehicle);
-        saveVehicle(vehicle); // Save to file
+        saveVehicle(vehicle);
+        return true;
     }
 
-    public void addCustomer(Customer customer) {
+    public boolean addCustomer(Customer customer) {
+        if (findCustomerById(customer.getCustomerId()) != null) {
+            System.out.println("Error: Customer with ID '" + customer.getCustomerId() + "' already exists.");
+            return false;
+        }
         customers.add(customer);
-        saveCustomer(customer); // Save to file
+        saveCustomer(customer);
+        return true;
     }
 
     public void rentVehicle(Vehicle vehicle, Customer customer, LocalDate date, double amount) {
@@ -40,7 +50,7 @@ public class RentalSystem {
             vehicle.setStatus(Vehicle.VehicleStatus.RENTED);
             RentalRecord record = new RentalRecord(vehicle, customer, date, amount, "RENT");
             rentalHistory.addRecord(record);
-            saveRecord(record); // Save to file
+            saveRecord(record);
             System.out.println("Vehicle rented to " + customer.getCustomerName());
         } else {
             System.out.println("Vehicle is not available for renting.");
@@ -52,7 +62,7 @@ public class RentalSystem {
             vehicle.setStatus(Vehicle.VehicleStatus.AVAILABLE);
             RentalRecord record = new RentalRecord(vehicle, customer, date, extraFees, "RETURN");
             rentalHistory.addRecord(record);
-            saveRecord(record); // Save to file
+            saveRecord(record);
             System.out.println("Vehicle returned by " + customer.getCustomerName());
         } else {
             System.out.println("Vehicle is not rented.");
@@ -222,4 +232,5 @@ public class RentalSystem {
         }
     }
 }
+
 
